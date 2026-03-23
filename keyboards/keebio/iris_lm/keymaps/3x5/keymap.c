@@ -41,7 +41,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 
-  // for whatever reason lprn is being shifted so replaced with 9 instead :/
   [_RAISE] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
      QK_BOOT,  KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,                              KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   QK_BOOT,
@@ -70,7 +69,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   )
 };
-
 
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
    // rgb_matrix_set_color(0, 20, 94, 85);
@@ -151,10 +149,13 @@ void keyboard_post_init_user(void) {
 }
 
 uint16_t get_flow_tap_term(uint16_t keycode, keyrecord_t* record, uint16_t prev_keycode) {
-    switch (keycode) {
-        case LSFT_T(KC_A): return 75;
-        case RSFT_T(KC_SCLN): return 75;
-        default: return 200;
-    }
-    return 0;
+   if (is_flow_tap_key(keycode) && is_flow_tap_key(prev_keycode)) {
+      switch (keycode) {
+         case LSFT_T(KC_A): return 75;
+         case RSFT_T(KC_SCLN): return 75;
+         default: return 200;
+      }
+   }
+   return 0;
 }
+
